@@ -1,10 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import VueRouter from './router'
-import axios from 'axios'
+import './assets/styles/scss/global.scss'
+
+import elementplus from 'element-plus'
+import 'element-plus/lib/theme-chalk/index.css'
+
 const app = createApp(App)
 
-app.config.globalProperties.$axios = axios
-
-app.use(VueRouter)
-  .mount('#app')
+app.use(VueRouter).use(elementplus).mount('#app')

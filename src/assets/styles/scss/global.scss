@@ -1,6 +1,22 @@
-* {
-  margin: 0;
-  padding: 0;
+@import url('reset.css/reset');
+@import url('./transition.scss');
+
+@font-face {
+  font-family: 'webmo';
+  src: url('@/assets/font/webmo.woff2');
+}
+
+// * ::selection {
+//   color: #fff;
+//   background: #088;
+// }
+
+html {
+  font-size: 100px;
+}
+
+body {
+  font-size: 16px;
 }
 
 .mg-10 {
