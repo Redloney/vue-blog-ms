@@ -354,6 +354,14 @@ duplexer2@~0.1.4:
   dependencies:
     readable-stream "^2.0.2"
 
+echarts@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.nlark.com/echarts/download/echarts-5.2.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fecharts%2Fdownload%2Fecharts-5.2.0.tgz#9f1fbfbf048c15ab630bf0a74525c4c534d6cebc"
+  integrity sha1-nx+/vwSMFatjC/CnRSXExTTWzrw=
+  dependencies:
+    tslib "2.3.0"
+    zrender "5.2.0"
+
 element-plus@^1.0.2-beta.41:
   version "1.0.2-beta.41"
   resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.41.tgz#9c234b536b3401d042505c003e579bd65081f0f0"
@@ -475,6 +483,11 @@ header-case@^2.0.4:
   dependencies:
     capital-case "^1.0.4"
     tslib "^2.0.3"
+
+highlight.js@^11.2.0:
+  version "11.2.0"
+  resolved "https://registry.nlark.com/highlight.js/download/highlight.js-11.2.0.tgz#a7e3b8c1fdc4f0538b93b2dc2ddd53a40c6ab0f0"
+  integrity sha1-p+O4wf3E8FOLk7LcLd1TpAxqsPA=
 
 icss-replace-symbols@^1.1.0:
   version "1.1.0"
@@ -891,6 +904,11 @@ to-regex-range@^5.0.1:
   resolved "https://registry.npm.taobao.org/traverse/download/traverse-0.3.9.tgz#717b8f220cc0bb7b44e40514c22b2e8bbc70d8b9"
   integrity sha1-cXuPIgzAu3tE5AUUwisui7xw2Lk=
 
+tslib@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.nlark.com/tslib/download/tslib-2.3.0.tgz?cache=0&sync_timestamp=1628722556410&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftslib%2Fdownload%2Ftslib-2.3.0.tgz#803b8cdab3e12ba581a4ca41c8839bbb0dacb09e"
+  integrity sha1-gDuM2rPhK6WBpMpByIObuw2ssJ4=
+
 tslib@^2.0.3:
   version "2.2.0"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-2.2.0.tgz#fb2c475977e35e241311ede2693cee1ec6698f5c"
@@ -1008,3 +1026,10 @@ yallist@^3.0.2:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/yallist/download/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha1-27fa+b/YusmrRev2ArjLrQ1dCP0=
+
+zrender@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.nlark.com/zrender/download/zrender-5.2.0.tgz?cache=0&sync_timestamp=1630140908990&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fzrender%2Fdownload%2Fzrender-5.2.0.tgz#f8abc484ac4a8a51b04c3ccd37beabe1def342cd"
+  integrity sha1-+KvEhKxKilGwTDzNN76r4d7zQs0=
+  dependencies:
+    tslib "2.3.0"

@@ -38,7 +38,11 @@
         </el-row>
       </el-form-item>
     </el-form>
-    <div class="copyright">Copyright @ 2019-2021 by redloney`s</div>
+
+    <div class="copyright">
+      Copyright © 2019-2021 By Redloney`s |
+      <a href="https://beian.miit.gov.cn/"> 鄂ICP备20004008号-1</a>
+    </div>
   </div>
 </template>
 
@@ -111,10 +115,15 @@ const resetForm = () => {};
     position: absolute;
     bottom: 0.5rem;
     font-size: 15px;
-    font-family: webmo;
+    font-family: "SentyTEA";
     color: #fff;
     letter-spacing: 1.5px;
     justify-self: flex-end;
+    font-weight: bold;
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
   }
 }
 </style>

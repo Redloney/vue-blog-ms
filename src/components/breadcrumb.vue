@@ -25,12 +25,21 @@ const route = useRoute();
   background-color: #fff;
   box-sizing: border-box;
   margin-bottom: 20px;
+  // font-family: webmo;
   .el-breadcrumb {
     color: #333;
     user-select: none;
     cursor: pointer;
     .el-breadcrumb-item {
+      font-weight: normal;
       cursor: pointer;
+    }
+  }
+
+  ::v-deep(.el-breadcrumb) {
+    .el-breadcrumb__inner a:hover,
+    .el-breadcrumb__inner.is-link:hover {
+      color: #ff3366;
     }
   }
 }

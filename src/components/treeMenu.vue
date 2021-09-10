@@ -5,21 +5,24 @@
       <span>首页</span>
     </template>
   </el-menu-item>
-  <el-submenu index="2">
+  <el-submenu index="/blog">
     <template #title>
       <i class="iconfont iconpaper"></i>
       <span>博客管理</span>
     </template>
-    <el-menu-item index="2-1">
+    <el-menu-item index="/blog">
+      <template #title>博客信息</template>
+    </el-menu-item>
+    <el-menu-item index="/blog/article">
       <template #title>文章管理</template>
     </el-menu-item>
-    <el-menu-item index="2-2">
+    <el-menu-item index="/blog/user">
       <template #title>用户管理</template>
     </el-menu-item>
-    <el-menu-item index="2-3">
+    <el-menu-item index="/blog/classify">
       <template #title>分类管理</template>
     </el-menu-item>
-    <el-submenu index="2-4">
+    <el-submenu index="/blog/tag">
       <template #title>
         <i class="iconfont iconzhekou"></i>
         <span>标签管理</span>

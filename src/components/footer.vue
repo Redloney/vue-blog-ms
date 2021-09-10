@@ -21,6 +21,12 @@
         <a href="#">超人</a>
       </p>
     </el-col>
+    <el-col class="part" :span="24">
+      <p class="copyright">
+        © RedLoney |
+        <a href="https://beian.miit.gov.cn/">鄂ICP备20004008号-1</a>
+      </p>
+    </el-col>
   </el-row>
 </template>
 
@@ -41,6 +47,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .footer-content {
+  margin-top: 20px;
   background-color: #23262e;
   padding: 30px;
   font-family: webmo;
@@ -84,8 +91,24 @@ export default defineComponent({
         &:hover,
         &:focus {
           color: #fff;
-          transform: scale(1.125);
+          // transform: scale(1.125);
           transition: 300ms linear;
+        }
+      }
+    }
+    .copyright {
+      border-top: 2px solid rgba(255, 255, 255, 0.651);
+      padding-top: 20px;
+      width: 100%;
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      font-weight: bold;
+      font-family: "SentyTEA";
+      a {
+        color: #fff;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
         }
       }
     }

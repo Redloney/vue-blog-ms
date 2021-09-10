@@ -3,10 +3,13 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/Home',
+    redirect: '/login',
   },
   {
     path: '/login',
+    meta: {
+      title: '登录页',
+    },
     component: () => import('../pages/login.vue'),
   },
   {
@@ -21,6 +24,15 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/wellcome',
       },
       {
+        name: '404',
+        path: '/404',
+        component: () => import('../container/404.vue'),
+        meta: {
+          title: '页面不存在',
+        },
+      },
+      {
+        name: 'wellcome',
         path: '/wellcome',
         component: () => import('../container/wellcome.vue'),
         meta: {
@@ -28,11 +40,38 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: '/blog/article',
-        component: () => import('../container/article.vue'),
+        name: 'blog',
+        path: '/blog',
+        component: () => import('../pages/blog.vue'),
         meta: {
-          title: '文章管理',
+          title: '博客',
         },
+        children: [
+          {
+            name: '',
+            path: '',
+            component: () => import('../container/article/home.vue'),
+            meta: {
+              title: '博客数据',
+            },
+          },
+          {
+            name: 'article',
+            path: 'article',
+            component: () => import('../container/Article/Article.vue'),
+            meta: {
+              title: '文章管理',
+            },
+          },
+          {
+            name: 'classify',
+            path: 'classify',
+            component: () => import('../container/Article/Classify.vue'),
+            meta: {
+              title: '文章分类',
+            },
+          },
+        ],
       },
     ],
   },
@@ -41,6 +80,16 @@ const routes: Array<RouteRecordRaw> = [
 const VueRouter = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+//全局守卫
+VueRouter.beforeEach((to, from, next) => {
+  if (to.matched.length !== 0) {
+    next()
+    document.title = to.meta.title as string
+  } else {
+    next({ path: '/404' })
+  }
 })
 
 export default VueRouter

@@ -2,33 +2,46 @@
   <div id="home">
     <SideMenu :isCollapse="isCollapse" />
     <el-container>
-      <el-header height="60px">
-        <!-- Header content -->
-        <!-- 展开按钮 -->
-        <el-row align="middle" type="flex" :gutter="20">
-          <el-col :span="5" class="hidden-md-only">
-            <div class="menu-fold" @click="toggle">
-              <i v-if="isCollapse" class="el-icon-s-unfold"></i>
-              <i v-else class="el-icon-s-fold"></i>
-            </div>
-          </el-col>
-        </el-row>
+      <!-- <Header /> -->
+      <el-header>
+        <div class="menu-fold" @click="toggle">
+          <i v-if="isCollapse" class="el-icon-s-unfold"></i>
+          <i v-else class="el-icon-s-fold"></i>
+        </div>
+        <div class="avatar">
+          <el-dropdown trigger="click">
+            <el-avatar
+              icon="el-icon-user-solid"
+              size="medium"
+              shape="square"
+              src="https://img0.baidu.com/it/u=1599297019,276943708&fm=26&fmt=auto"
+              fit="fill"
+            >
+            </el-avatar>
+            <i class="icon el-icon-caret-bottom"></i>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>个人中心</el-dropdown-item>
+                <el-dropdown-item divided>退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </el-header>
       <el-main>
         <!-- 面包屑 -->
         <BreadCrumb />
         <router-view />
+        <!-- <Footer /> -->
       </el-main>
-      <el-footer>
-        <Footer />
-      </el-footer>
     </el-container>
   </div>
 </template>
 
 <script lang="ts" setup>
 import SideMenu from "../components/sideMenu.vue";
-import Footer from "../components/footer.vue";
+// import Footer from "../components/footer.vue";
+import Header from "../components/Header.vue";
 import { ref } from "vue";
 
 import BreadCrumb from "../components/breadcrumb.vue";
@@ -43,7 +56,6 @@ let userinfo = ref({
 const toggle = () => {
   isCollapse.value = !isCollapse.value;
 };
-const handleCommand = () => {};
 </script>
 
 <style lang="scss">
@@ -55,7 +67,6 @@ const handleCommand = () => {};
   justify-content: center;
   align-items: center;
   .el-container {
-    flex-grow: 1;
     width: 100%;
     height: 100%;
     overflow-y: scroll;
@@ -63,18 +74,27 @@ const handleCommand = () => {};
       display: none;
     }
     .el-header {
+      z-index: 100;
       width: 100%;
       display: flex;
       align-items: center;
       background-color: #fff;
+      box-shadow: 0 0 10px #333;
       .menu-fold {
         cursor: pointer;
         font-size: 0.3rem;
         transition: 200ms linear;
         text-align: left;
       }
-      .self {
+      .avatar {
+        margin-left: auto;
         text-align: right;
+        .icon {
+          margin-left: 5px;
+          color: #666;
+          font-weight: bold;
+          font-size: 12px;
+        }
       }
       .notice {
         line-height: 0.2rem;
@@ -86,14 +106,35 @@ const handleCommand = () => {};
       }
     }
     .el-main {
-      overflow: hidden;
       background-color: #eef0f3;
-      flex-basis: 70%;
+      height: auto;
+      overflow-y: scroll;
+      box-sizing: border-box;
+      padding-bottom: 100px;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      // padding: 20px 0 0 0;
+      .view {
+        width: 100%;
+        height: 100%;
+        // margin: 0 20px;
+      }
     }
-    .el-footer {
-      padding: 0;
-      flex-basis: 20%;
-    }
+  }
+}
+.el-popover {
+  padding: 0 !important;
+}
+.el-tabs__content {
+  padding: 0 15px 15px 15px;
+}
+.el-tabs__nav {
+  @include flex-center;
+  .el-tabs__item {
+    text-align: center;
+    padding: 0;
   }
 }
 </style>
