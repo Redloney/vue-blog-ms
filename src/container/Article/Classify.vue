@@ -44,8 +44,7 @@
           type="primary"
           plain
           @click="dialogFormVisible = true"
-          >添加分类</el-button
-        >
+        >添加分类</el-button>
       </el-col>
       <el-col :span="12" :offset="0" style="text-align: right; margin-left: auto">
         <el-tooltip content="隐藏搜索栏" placement="top">
@@ -111,41 +110,22 @@
   </div>
   <!-- 分类表格 -->
   <div class="table">
-    <el-table
-      stripe
-      highlight-current-row
-      style="width: 100%"
-      :indent="60"
-      :data="tableData"
-    >
-      <el-table-column
-        align="center"
-        v-for="item in tableHeader"
-        :key="item.prop"
-        v-bind="item"
-      />
+    <el-table stripe highlight-current-row style="width: 100%" :indent="60" :data="tableData">
+      <el-table-column align="center" v-for="item in tableHeader" :key="item.prop" v-bind="item" />
       <el-table-column align="center" label="操作">
         <template #default="scope">
-          <el-row justify="center" align="middle" :gutter="20">
-            <el-col :span="8" :offset="0">
-              <el-button circle size="mini" icon="el-icon-edit"></el-button
-            ></el-col>
-            <el-col :span="8" :offset="0">
-              <el-button circle size="mini" icon="el-icon-plus"></el-button
-            ></el-col>
-            <el-col :span="8" :offset="0">
-              <el-button
-                circle
-                size="mini"
-                type="danger"
-                icon="el-icon-delete"
-              ></el-button
-            ></el-col>
-          </el-row>
+          <div class="btns">
+            <el-button circle size="mini" icon="el-icon-edit"></el-button>
+            <el-button circle size="mini" icon="el-icon-plus"></el-button>
+            <el-popconfirm size="medium" title="这是一段内容确定删除吗？">
+              <template #reference>
+                <el-button circle size="mini" type="danger" icon="el-icon-delete"></el-button>
+              </template>
+            </el-popconfirm>
+          </div>
         </template>
       </el-table-column>
     </el-table>
-
     <!-- 分页 -->
     <el-pagination
       class="pagination"
@@ -156,8 +136,7 @@
       :page-size="100"
       layout="total, sizes, prev, pager, next, jumper"
       :total="400"
-    >
-    </el-pagination>
+    ></el-pagination>
   </div>
 </template>
 
@@ -220,6 +199,7 @@ const ClassifyState = reactive([
 ]);
 
 const classifyAll = reactive([]);
+
 const tableHeader = reactive([
   {
     label: "分类名称",
@@ -321,6 +301,18 @@ const artFormData = reactive({
   width: 100%;
   box-sizing: border-box;
   padding: 15px;
+}
+
+.table {
+  .btns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .el-button {
+      margin: 0px;
+      margin: 5px;
+    }
+  }
 }
 
 ::v-deep(.el-overlay) {

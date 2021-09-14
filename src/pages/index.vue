@@ -16,8 +16,7 @@
               shape="square"
               src="https://img0.baidu.com/it/u=1599297019,276943708&fm=26&fmt=auto"
               fit="fill"
-            >
-            </el-avatar>
+            ></el-avatar>
             <i class="icon el-icon-caret-bottom"></i>
             <template #dropdown>
               <el-dropdown-menu>
@@ -31,7 +30,7 @@
       <el-main>
         <!-- 面包屑 -->
         <BreadCrumb />
-        <router-view />
+        <router-view></router-view>
         <!-- <Footer /> -->
       </el-main>
     </el-container>
@@ -88,6 +87,7 @@ const toggle = () => {
       }
       .avatar {
         margin-left: auto;
+        margin-right: 20px;
         text-align: right;
         .icon {
           margin-left: 5px;
@@ -124,9 +124,9 @@ const toggle = () => {
     }
   }
 }
-.el-popover {
-  padding: 0 !important;
-}
+// .el-popover {
+//   padding: 0 !important;
+// }
 .el-tabs__content {
   padding: 0 15px 15px 15px;
 }

@@ -1,10 +1,10 @@
 <template>
   <div class="login">
-    <el-form :model="formState" status-icon ref="loginForm" class="form">
+    <el-form :model="formData" :rules="rules" status-icon ref="loginForm" class="form">
       <h1 class="title">Redloney`s 后台管理系统</h1>
       <el-form-item prop="nickname">
         <el-input
-          v-model="formState.nickname"
+          v-model="formData.username"
           prefix-icon="el-icon-user"
           autocomplete="off"
         ></el-input>
@@ -12,7 +12,7 @@
 
       <el-form-item prop="password">
         <el-input
-          v-model="formState.password"
+          v-model="formData.password"
           prefix-icon="el-icon-lock"
           type="password"
           autocomplete="off"
@@ -22,11 +22,11 @@
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12" :offset="0">
-            <el-checkbox v-model="formState.remember">记住我</el-checkbox>
+            <el-checkbox v-model="formData.remember">记住我</el-checkbox>
           </el-col>
-          <el-col :span="12" :offset="0">
+          <!-- <el-col :span="12" :offset="0">
             <el-button type="text">注册</el-button>
-          </el-col>
+          </el-col> -->
           <el-col :span="24" :offset="0">
             <el-button
               style="width: 100%; margin-top: 15px"
@@ -47,33 +47,43 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
+import { reactive, ref, Ref } from "vue";
 import { ElForm, ElFormItem, ElButton, ElInput } from "element-plus";
-
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
 // 接口
 interface formTypes {
-  nickname: string;
+  username: string;
   password: string;
   remember: boolean;
 }
 
 // 表单Dom
-// const loginForm: Ref<HTMLElement | null> = ref(null);
+const loginForm: Ref<any | null> = ref(null);
 
 // 表单数据
-const formState = reactive<formTypes>({
-  nickname: "",
-  password: "",
-  remember: false,
+const formData = reactive<formTypes>({
+  username: "admin",
+  password: "admin",
+  remember: true,
 });
+
+const rules = {
+  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+};
 
 // 提交
 const submitForm = () => {
-  router.push("/Home");
+  (loginForm.value as any).validate((valid: boolean) => {
+    if (valid) {
+      router.push("/Home");
+    } else {
+      return false;
+    }
+  });
 };
 // 重置
 const resetForm = () => {};

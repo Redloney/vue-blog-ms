@@ -3,8 +3,8 @@
     <el-col :span="24" :offset="0">
       <div ref="editor" class="editor"></div>
     </el-col>
-    <el-col :span="24" :offset="0">
-      <el-button @click="syncHTML">同步内容</el-button>
+    <el-col :span="24" :offset="0" style="margin: 20px 0">
+      <el-button size="small" @click="syncHTML">同步内容</el-button>
     </el-col>
     <el-col :span="24" :offset="0">
       <div class="html" :innerHTML="content.html"></div>
@@ -15,13 +15,16 @@
 <script lang="ts" setup>
 import hljs from "highlight.js";
 import WangEditor from "wangeditor";
-import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
+import { ref, reactive, onMounted, onBeforeUnmount, defineEmit } from "vue";
 const editor = ref(null);
+
+const emit = defineEmit(["getHtml"]);
 
 const content = reactive({
   html: "",
   text: "",
 });
+
 let instance: any;
 
 onMounted(() => {
@@ -29,7 +32,7 @@ onMounted(() => {
   Object.assign(instance.config, {
     uploadImgServer: "",
     onchange() {
-      console.log("change");
+      syncHTML();
     },
   });
   instance.highlight = hljs;
@@ -43,6 +46,7 @@ onBeforeUnmount(() => {
 
 const syncHTML = () => {
   content.html = instance.txt.html();
+  emit("getHtml", content);
 };
 </script>
 

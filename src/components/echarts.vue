@@ -3,14 +3,37 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 
 import * as echarts from "echarts";
 
 const echartsBody = ref(null);
 
+// 节流函数
+const throttle = (callback: Function, delay: number) => {
+  let flag = true;
+  return () => {
+    if (flag) {
+      flag = false;
+      setTimeout(() => {
+        callback.bind(this)();
+        flag = true;
+      }, delay);
+    }
+  }
+}
+
+
 onMounted(() => {
-  var option = {
+  window.onresize = throttle(() => {
+    nextTick(() => {
+      myChart.resize()
+    })
+  }, 300)
+
+  const myChart = echarts.init(echartsBody.value as any);
+
+  let option = {
     legend: {},
     tooltip: {
       trigger: "axis",
@@ -71,9 +94,10 @@ onMounted(() => {
     ],
   };
 
-  const myChart = echarts.init(echartsBody.value as any);
 
   myChart.setOption(option);
+
+
 });
 </script>
 
