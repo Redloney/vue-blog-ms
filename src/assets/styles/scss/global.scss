@@ -12,14 +12,29 @@
 }
 
 @font-face {
-  font-family: SentyTEA;
-  src: url('@/assets/font/SentyTEA.ttf');
+  font-family: 'oppo';
+  font-weight: 400;
+  font-display: auto;
+  src: url('https://cdn.jsdelivr.net/gh/zetheme/zetheme/fonts/opposans400.ttf')format("truetype");
 }
 
-// * ::selection {
-//   color: #fff;
-//   background: #088;
-// }
+@font-face {
+  font-family: 'oppo';
+  font-weight: 500;
+  font-display: auto;
+  src: url('https://cdn.jsdelivr.net/gh/zetheme/zetheme/fonts/opposans500.ttf')format("truetype");
+}
+
+@font-face {
+  font-family: SentyTEA;
+  src: url('https://cdn.jsdelivr.net/gh/Redloney/CDN@1.0/static/SentyTEA.ttf');
+}
+
+@import url("https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css");
+
+* {
+  font-family: oppo;
+}
 
 html {
   font-size: 100px;
@@ -91,4 +106,29 @@ body {
 
 .mg-fff {
   background-color: #fff;
+}
+
+.tox.tox-silver-sink.tox-tinymce-aux {
+  z-index: 3000;
+}
+
+// element-ui 默认样式
+
+// .table-form {
+
+//   .el-table__header-wrapper {
+//     &::-webkit-scrollbar {
+//       display: none;
+//     }
+//   }
+
+//   .el-table__body-wrapper {
+//     &::-webkit-scrollbar {
+//       display: none;
+//     }
+//   }
+// }
+*::selection {
+  background-color: #00bfff5e;
+  color: #333;
 }

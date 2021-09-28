@@ -315,12 +315,12 @@ const artFormData = reactive({
   }
 }
 
-::v-deep(.el-overlay) {
+:deep(.el-overlay) {
   &::-webkit-scrollbar {
     display: none;
   }
 }
-::v-deep(.el-dialog) {
+:deep(.el-dialog) {
   width: 80vw !important;
 }
 .pagination {

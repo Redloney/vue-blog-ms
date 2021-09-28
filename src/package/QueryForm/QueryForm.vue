@@ -1,6 +1,11 @@
 <template>
   <div class="query-bar">
-    <el-form label-width="100px" ref="quertform" :model="querModel" size="small">
+    <el-form
+      label-width="100px"
+      ref="quertform"
+      :model="querModel"
+      size="small"
+    >
       <div class="input-box">
         <template v-for="item in querModel" :key="index">
           <div class="input">
@@ -28,83 +33,83 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmit, Ref, ref, onMounted, PropType } from "vue";
-import { ElFormContext } from "element-plus/lib/el-form";
-import FormItem from "./FormItem.vue";
+import { defineProps, defineEmit, Ref, ref, onMounted, PropType } from 'vue'
+import { ElFormContext } from 'element-plus/lib/el-form'
+import FormItem from './FormItem.vue'
 
 interface Option {
-  label?: String;
-  value?: String | Number;
+  label?: String
+  value?: String | Number
 }
 
 interface Item {
-  type?: String;
-  model?: String;
-  label?: String;
-  placeholder?: String;
-  options?: Array<Option>;
+  type?: String
+  model?: String
+  label?: String
+  placeholder?: String
+  options?: Array<Option>
 }
 
 const querModel: Array<Item> = [
   {
-    type: "input",
-    model: "title",
-    label: "文章标题",
-    placeholder: "请输入文章标题",
+    type: 'input',
+    model: 'title',
+    label: '文章标题',
+    placeholder: '请输入文章标题',
   },
   {
-    type: "input",
-    model: "author",
-    label: "作者",
-    placeholder: "请输入作者名称",
+    type: 'input',
+    model: 'author',
+    label: '作者',
+    placeholder: '请输入作者名称',
   },
   {
-    type: "select",
-    model: "state",
-    label: "状态",
-    placeholder: "请选择文章状态",
+    type: 'select',
+    model: 'state',
+    label: '状态',
+    placeholder: '请选择文章状态',
     options: [
       {
-        label: "全部",
-        value: "",
+        label: '全部',
+        value: '',
       },
       {
-        label: "公开",
+        label: '公开',
         value: 1,
       },
       {
-        label: "隐藏",
+        label: '隐藏',
         value: 2,
       },
     ],
   },
   {
-    type: "select",
-    model: "classify",
-    label: "文章分类",
-    placeholder: "请选择文章分类",
+    type: 'select',
+    model: 'classify',
+    label: '文章分类',
+    placeholder: '请选择文章分类',
     options: [
       {
-        label: "全部",
-        value: "",
+        label: '全部',
+        value: '',
       },
     ],
   },
-];
+]
 
 defineProps({
   querModel: Object as PropType<{}>,
-});
+})
 
 defineEmit({
   handleQuery: () => {
-    console.log("Query");
+    console.log('Query')
   },
-});
+})
 
-onMounted(() => {});
+onMounted(() => {})
 
-const quertform: Ref<ElFormContext | null> = ref(null);
+const quertform: Ref<ElFormContext | null> = ref(null)
 // 声明区
 
 // 函数区

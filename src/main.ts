@@ -13,7 +13,4 @@ import Packages from './package'
 
 const app = createApp(App)
 
-app.use(VueRouter)
-    .use(elementplus, { size: 'small ', locale })
-    .use(Packages)
-    .mount('#app')
+app.use(VueRouter).use(elementplus, { size: 'small ', locale }).use(Packages).mount('#app')

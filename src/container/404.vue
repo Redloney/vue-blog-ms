@@ -39,7 +39,7 @@ const goHome = () => {
     }
   }
   .font {
-    margin: 0.3rem 0;
+    margin: 0.6rem 0;
     .statusStyle {
       margin-bottom: 0.2rem;
       color: #434e59;

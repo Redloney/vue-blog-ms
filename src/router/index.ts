@@ -1,4 +1,17 @@
+import { login } from './../api/user'
+import lodash from 'lodash'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import storage from '../utils/storage'
+import NProgress from 'nprogress'
+
+NProgress.configure({
+  parent: '#app',
+  showSpinner: false,
+  easing: 'case',
+  speed: 500,
+})
+
+import 'nprogress/nprogress.css'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,68 +23,75 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '登录页',
     },
-    component: () => import('../pages/login.vue'),
+    component: () => import('../view/login.vue'),
   },
   {
-    path: '/Home',
-    component: () => import('../pages/index.vue'),
+    path: '/main',
+    component: () => import('../layout/layout.vue'),
     meta: {
       title: '首页',
     },
     children: [
       {
         path: '',
-        redirect: '/wellcome',
+        component: () => import('../container/main.vue'),
       },
       {
-        name: '404',
-        path: '/404',
+        path: '404',
         component: () => import('../container/404.vue'),
         meta: {
-          title: '页面不存在',
+          title: '404',
+        },
+      },
+    ],
+  },
+  {
+    path: '/role',
+    component: () => import('../layout/layout.vue'),
+    meta: {
+      title: '角色管理',
+    },
+    children: [
+      {
+        path: '/role',
+        component: () => import('../container/system/role.vue'),
+        meta: {
+          title: '',
+        },
+      },
+    ],
+  },
+  {
+    path: '/blog',
+    component: () => import('../layout/layout.vue'),
+    meta: {
+      title: '博客信息',
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('../container/article/home.vue'),
+      },
+      {
+        path: 'article',
+        component: () => import('../container/article/article.vue'),
+        meta: {
+          title: '文章管理',
         },
       },
       {
-        name: 'wellcome',
-        path: '/wellcome',
-        component: () => import('../container/wellcome.vue'),
+        path: 'comment',
+        component: () => import('../container/comment/comment.vue'),
         meta: {
-          title: '欢迎页',
+          title: '留言管理',
         },
       },
       {
-        name: 'blog',
-        path: '/blog',
-        component: () => import('../pages/blog.vue'),
+        path: 'user',
+        component: () => import('../container/user/user.vue'),
         meta: {
-          title: '博客',
+          title: '用户管理',
         },
-        children: [
-          {
-            name: '',
-            path: '',
-            component: () => import('../container/article/home.vue'),
-            meta: {
-              title: '博客数据',
-            },
-          },
-          {
-            name: 'article',
-            path: 'article',
-            component: () => import('../container/Article/Article.vue'),
-            meta: {
-              title: '文章管理',
-            },
-          },
-          {
-            name: 'classify',
-            path: 'classify',
-            component: () => import('../container/Article/Classify.vue'),
-            meta: {
-              title: '文章分类',
-            },
-          },
-        ],
       },
     ],
   },
@@ -83,13 +103,23 @@ const VueRouter = createRouter({
 })
 
 //全局守卫
-VueRouter.beforeEach((to, from, next) => {
+VueRouter.beforeEach((to, _from, next) => {
+  NProgress.start() // 进度条开始加载
+  // token 验证 没有 token 不准许进一步操作
+  // const token = storage.get('token')
+  // if (lodash.isEmpty(token)) {
+  //     next({ path: '/login' })
+  // }
   if (to.matched.length !== 0) {
     next()
     document.title = to.meta.title as string
   } else {
-    next({ path: '/404' })
+    next({ path: '/main/404' })
   }
+})
+
+VueRouter.afterEach(() => {
+  NProgress.done() // 进度条记载完毕
 })
 
 export default VueRouter

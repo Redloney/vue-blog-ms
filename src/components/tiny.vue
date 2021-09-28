@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmit, onMounted } from "vue";
+import { defineEmit, defineProps, onMounted } from "vue";
 import tinymce from "tinymce";
 
 import "tinymce/themes/silver/theme";
@@ -42,16 +42,27 @@ onMounted(() => {
       "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink emoticons codesample image code preview | removeformat",
     content_css: "/public/skins/content/default/content.css",
     init_instance_callback: (editor) => {
-      editor.on("input", () => {
+      setHtml();
+      editor.on("change", () => {
         getHtml();
       });
     },
   });
 });
 
+const props = defineProps({
+  html: String,
+});
+
 // 函数区
 
 const emit = defineEmit(["getHtml"]);
+
+const setHtml = () => {
+  if (props.html) {
+    tinymce.activeEditor.setContent(props.html as any);
+  }
+};
 
 const getHtml = () => {
   const html = tinymce.activeEditor.getContent();
@@ -61,4 +72,9 @@ const getHtml = () => {
 // 类型区
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+* {
+  margin: 0;
+  padding: 0;
+}
+</style>

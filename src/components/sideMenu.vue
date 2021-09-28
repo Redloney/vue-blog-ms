@@ -5,7 +5,6 @@
       class="nav-menu"
       background-color="#23262e"
       text-color="#fff"
-      active-text-color="#ff3366"
       router
       :collapse="isCollapse"
     >
@@ -21,7 +20,12 @@
       <TreeMenu :isCollapse="isCollapse" />
     </el-menu>
   </el-aside>
-  <!-- <el-drawer v-model="isCollapse" modal="false" direction="ltr" :with-header="false">
+  <!-- <el-drawer
+    v-model="isCollapse"
+    :modal="false"
+    direction="ltr"
+    :with-header="false"
+  >
     <el-aside :width="'100%'">
       <el-menu
         class="nav-menu"
@@ -29,8 +33,6 @@
         text-color="#fff"
         active-text-color="#ff3366"
         router
-        @open="handleOpen"
-        @close="handleClose"
         :collapse="!isCollapse"
       >
         <div class="userinfo" :class="{ shrink: isCollapse }">
@@ -47,8 +49,8 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, inject, onMounted, ref, watch, watchEffect } from "vue";
-import TreeMenu from "./treeMenu.vue";
+import { defineProps, inject, onMounted, ref, watch, watchEffect } from 'vue'
+import TreeMenu from './treeMenu.vue'
 
 // let screenWidth = ref(0);
 // let timer = ref(false);
@@ -75,7 +77,7 @@ import TreeMenu from "./treeMenu.vue";
 
 defineProps({
   isCollapse: Boolean,
-});
+})
 </script>
 
 <style lang="scss">
@@ -112,7 +114,7 @@ defineProps({
       &:hover {
         cursor: pointer;
         transition: 500ms linear;
-        background: url("@/assets/image/snow.gif");
+        background: url('@/assets/image/snow.gif');
         background-size: cover;
       }
       .avatar {

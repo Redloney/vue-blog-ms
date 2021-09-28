@@ -13,17 +13,18 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmit, ref } from "vue";
-let isCollapse = ref(false);
+import { defineEmit, ref } from 'vue'
+let isCollapse = ref(false)
 
 let userinfo = ref({
-  nickname: "张三",
-  email: "zs@213.com",
-});
+  nickname: '张三',
+  email: 'zs@213.com',
+})
 
 const toggle = () => {
-  isCollapse.value = !isCollapse.value;
-};
+  isCollapse.value = !isCollapse.value
+  console.log(isCollapse.value)
+}
 </script>
 <style lang="scss" scoped>
 ::v-deep(.el-header) {
