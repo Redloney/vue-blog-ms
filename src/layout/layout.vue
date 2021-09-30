@@ -29,11 +29,6 @@
       <el-main>
         <!-- 面包屑 -->
         <BreadCrumb />
-        <!-- 
-          <transition name="fade">
-            <router-view />sssss
-          </transition> 
-        -->
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
             <component :is="Component" />
@@ -47,7 +42,7 @@
 
 <script lang="ts" setup>
 import SideMenu from "../components/sideMenu.vue";
-// import Footer from "../components/footer.vue";
+import Footer from "../components/footer.vue";
 import Header from "../components/Header.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";

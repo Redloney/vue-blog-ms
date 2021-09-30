@@ -8,11 +8,16 @@ export default defineConfig({
     port: 5000,
     open: true,
     proxy: {
-      '/api': {
-        target: 'https://www.redloney.cn/api',
-        // target: 'http://localhost:8088',
+      '^/api': {
+        // target: 'https://www.redloney.cn/api',
+        target: 'http://localhost:8088',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ''),
+      },
+      '^/avatar': {
+        target: 'https://api.btstu.cn/sjtx/api.php',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/avatar/, ''),
       },
     },
   },

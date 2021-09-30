@@ -1,33 +1,14 @@
 <template>
-  <div class="role">
+  <div class="category">
     <transition name="fade">
       <section class="search-bar" v-show="state.queryFormVisible">
         <el-form label-width="80px" ref="queryform">
           <div class="inputs">
-            <el-form-item class="input" size="small" prop="nickname" label="昵称">
+            <el-form-item class="input" size="small" prop="nickname" label="名称">
               <el-input
-                placeholder="请输入角色名称"
+                placeholder="请输入分类名称"
                 v-model="state.queryFormValue.nickname"
               ></el-input>
-            </el-form-item>
-            <el-form-item class="input" size="small" prop="gender" label="性别">
-              <el-select
-                v-model="state.queryFormValue.gender"
-                placeholder="选择角色状态"
-                clearable
-                filterable
-              >
-                <el-option
-                  v-for="item in [
-                    { label: '启用', value: 'able' },
-                    { label: '停用', value: 'disable' },
-                  ]"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
             </el-form-item>
             <div class="btns">
               <el-form-item class="input">
@@ -73,7 +54,7 @@
           </el-tooltip>
           <el-tooltip content="刷新数据" placement="top">
             <el-button
-              @click="getRoleData"
+              @click="getCateData"
               circle
               size="mini"
               icon="el-icon-refresh"
@@ -83,7 +64,6 @@
       </div>
       <el-table
         stripe
-        fit
         highlight-current-row
         style="width: 100%"
         :indent="60"
@@ -98,8 +78,19 @@
           :key="item.prop"
           v-bind="item"
         >
-          <template #default="scope" v-if="item.prop == 'status'">
-            <el-switch v-model="scope.row.status" @change="changeRoleStatus"></el-switch>
+          <template #default="scope" v-if="item.prop == 'label'">
+            <el-tag>
+              {{ scope.row.label }}
+            </el-tag>
+          </template>
+          <template #default="scope" v-if="item.prop == 'enable'">
+            <el-switch v-model="scope.row.enable"> </el-switch>
+          </template>
+          <template #default="scope" v-else-if="item.prop == 'hidden'">
+            <el-switch v-model="scope.row.hidden"> </el-switch>
+          </template>
+          <template #default="scope" v-else-if="item.prop == 'createdAt'">
+            {{ format(scope.row.address, "YYYY-MM-DD") }}
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
@@ -108,10 +99,7 @@
               <el-button circle size="mini" icon="el-icon-view"></el-button>
               <el-button circle size="mini" icon="el-icon-edit"></el-button>
 
-              <el-popconfirm
-                title="你确定要删除此用户么？"
-                @confirm="() => scope.row._id"
-              >
+              <el-popconfirm title="你确定要删除此用户么？">
                 <template #reference>
                   <el-button
                     circle
@@ -125,48 +113,48 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <el-pagination
-        @size-change="sizeChange"
-        class="pagination"
-        :current-page="1"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="20"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="1"
-      ></el-pagination> -->
     </section>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ElMessage, ElMessageBox } from "element-plus";
-import { reactive } from "vue";
+<script setup lang="ts">
+import { ref, reactive, onMounted } from "vue";
+import { getCategorys } from "../api/category";
+import { format } from "../utils/day";
+const search = () => {};
 
-const state = reactive({
-  tableData: [
-    {
-      rolename: "超级管理员",
-      authority: "admin",
-      status: true,
-      createdAt: "2021-09-01",
-    },
-  ],
+const load = async () => {
+  const categorys = await getCategorys();
+  state.tableData = categorys;
+};
+
+onMounted(() => {
+  load();
+});
+
+// 查询表单
+const state = reactive<any>({
+  tableData: [],
   tableFields: [
     {
-      label: "角色名称",
-      prop: "rolename",
+      label: "名称",
+      prop: "label",
+      width: "100px",
     },
     {
-      label: "权限字符",
-      prop: "authority",
+      label: "启用",
+      prop: "enable",
+      width: "100px",
     },
     {
-      label: "状态",
-      prop: "status",
+      label: "隐藏",
+      prop: "hidden",
+      width: "100px",
     },
     {
-      label: "评论时间",
+      label: "注册时间",
       prop: "createdAt",
+      width: "160px",
     },
   ],
   queryFormVisible: true,
@@ -176,37 +164,15 @@ const state = reactive({
   },
 });
 
-const search = () => {};
-
-const changeRoleStatus = () => {
-  ElMessageBox.confirm('你确定要"停用"此角色么?', "警告", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  })
-    .then(() => {
-      ElMessage({
-        type: "success",
-        message: "停用成功!",
-      });
-    })
-    .catch(() => {
-      ElMessage({
-        type: "error",
-        message: "停用失败!",
-      });
-    });
-};
-
 const hideSerachBar = () => {
   state.queryFormVisible = !state.queryFormVisible;
 };
 
-const getRoleData = () => {};
+const getCateData = () => {};
 </script>
 
 <style lang="scss" scoped>
-.role {
+.category {
   .search-bar {
     background-color: #fff;
     box-sizing: border-box;

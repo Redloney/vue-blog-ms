@@ -1,33 +1,14 @@
 <template>
-  <div class="comment">
+  <div class="tag">
     <transition name="fade">
       <section class="search-bar" v-show="state.queryFormVisible">
         <el-form label-width="80px" ref="queryform">
           <div class="inputs">
-            <el-form-item class="input" size="small" prop="nickname" label="昵称">
+            <el-form-item class="input" size="small" prop="nickname" label="名称">
               <el-input
-                placeholder="请输入用户昵称"
+                placeholder="请输入标签名称"
                 v-model="state.queryFormValue.nickname"
               ></el-input>
-            </el-form-item>
-            <el-form-item class="input" size="small" prop="gender" label="性别">
-              <el-select
-                v-model="state.queryFormValue.gender"
-                placeholder="选择用户性别"
-                clearable
-                filterable
-              >
-                <el-option
-                  v-for="item in [
-                    { label: '男', value: 'male' },
-                    { label: '女', value: 'female' },
-                  ]"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
             </el-form-item>
             <div class="btns">
               <el-form-item class="input">
@@ -73,7 +54,7 @@
           </el-tooltip>
           <el-tooltip content="刷新数据" placement="top">
             <el-button
-              @click="getCommData"
+              @click="getCateData"
               circle
               size="mini"
               icon="el-icon-refresh"
@@ -83,7 +64,6 @@
       </div>
       <el-table
         stripe
-        fit
         highlight-current-row
         style="width: 100%"
         :indent="60"
@@ -98,20 +78,19 @@
           :key="item.prop"
           v-bind="item"
         >
-          <template #default="scope" v-if="item.prop == 'userinfo.avatar'">
-            <el-avatar
-              icon="el-icon-user-solid"
-              shape="circle"
-              :src="scope.row.userinfo.avatar"
-              fit="fill"
-            ></el-avatar>
+          <template #default="scope" v-if="item.prop == 'label'">
+            <el-tag>
+              {{ scope.row.label }}
+            </el-tag>
           </template>
-          <template #default="scope" v-else-if="item.prop == 'userinfo.gender'">
-            <el-tag v-if="scope.row.userinfo.gender == 'male'">男</el-tag>
-            <el-tag v-else type="danger">女</el-tag>
+          <template #default="scope" v-if="item.prop == 'enable'">
+            <el-switch v-model="scope.row.enable"> </el-switch>
+          </template>
+          <template #default="scope" v-else-if="item.prop == 'hidden'">
+            <el-switch v-model="scope.row.hidden"> </el-switch>
           </template>
           <template #default="scope" v-else-if="item.prop == 'createdAt'">
-            {{ format(scope.row.createdAt, "YYYY-MM-DD - HH:mm") }}
+            {{ format(scope.row.address, "YYYY-MM-DD") }}
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
@@ -120,10 +99,7 @@
               <el-button circle size="mini" icon="el-icon-view"></el-button>
               <el-button circle size="mini" icon="el-icon-edit"></el-button>
 
-              <el-popconfirm
-                title="你确定要删除此用户么？"
-                @confirm="() => deleteComment(scope.row._id)"
-              >
+              <el-popconfirm title="你确定要删除此用户么？">
                 <template #reference>
                   <el-button
                     circle
@@ -137,56 +113,48 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="sizeChange"
-        class="pagination"
-        :current-page="1"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="20"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="1"
-      ></el-pagination>
     </section>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { reactive, onMounted } from "vue";
-import { getComment } from "../../api/comment";
-import { format } from "../../utils/day";
+<script setup lang="ts">
+import { ref, reactive, onMounted } from "vue";
+import { getTags } from "../api/tag";
+import { format } from "../utils/day";
+const search = () => {};
 
-const state = reactive({
+const load = async () => {
+  const tags = await getTags();
+  state.tableData = tags;
+};
+
+onMounted(() => {
+  load();
+});
+
+// 查询表单
+const state = reactive<any>({
   tableData: [],
   tableFields: [
     {
-      label: "头像",
-      prop: "userinfo.avatar",
+      label: "名称",
+      prop: "label",
       width: "100px",
     },
     {
-      label: "昵称",
-      prop: "userinfo.nickname",
+      label: "启用",
+      prop: "enable",
       width: "100px",
     },
     {
-      label: "性别",
-      prop: "userinfo.gender",
-      width: "50px",
+      label: "隐藏",
+      prop: "hidden",
+      width: "100px",
     },
     {
-      label: "评论内容",
-      prop: "content",
-      width: "300px",
-    },
-    {
-      label: "回复",
-      prop: "children.length",
-      width: "50px",
-    },
-    {
-      label: "评论时间",
+      label: "注册时间",
       prop: "createdAt",
-      width: "200px",
+      width: "160px",
     },
   ],
   queryFormVisible: true,
@@ -196,39 +164,15 @@ const state = reactive({
   },
 });
 
-const sizeChange = (val: number) => {
-  getCommData({ size: val });
-};
-
-// 查询
-const search = () => {
-  // const { gender, nickname } = state.queryFormValue;
-  // getUserData({ gender, nickname });
-};
-
 const hideSerachBar = () => {
   state.queryFormVisible = !state.queryFormVisible;
 };
 
-const getCommData = async (query?: { page?: number; size?: number }) => {
-  const comments = await getComment({ page: query?.page, size: query?.size });
-  comments.createdAt = format(comments.createdAt, "YYYY-MM-DD");
-  state.tableData = comments;
-};
-
-const load = async () => {
-  getCommData();
-};
-
-const deleteComment = (id: string) => {};
-
-onMounted(() => {
-  load();
-});
+const getCateData = () => {};
 </script>
 
 <style lang="scss" scoped>
-.comment {
+.tag {
   .search-bar {
     background-color: #fff;
     box-sizing: border-box;
@@ -255,7 +199,6 @@ onMounted(() => {
       }
     }
   }
-
   .table-form {
     margin-top: 20px;
     .table-toolbar {
@@ -280,17 +223,6 @@ onMounted(() => {
       margin-top: 20px;
       text-align: right;
     }
-  }
-
-  // 滚动条的宽度
-  :deep(.el-table__body-wrapper::-webkit-scrollbar) {
-    width: 5px; // 横向滚动条
-    height: 10px; // 纵向滚动条 必写
-  }
-  // 滚动条的滑块
-  :deep(.el-table__body-wrapper::-webkit-scrollbar-thumb) {
-    background-color: #ddd;
-    border-radius: 30px;
   }
 }
 </style>

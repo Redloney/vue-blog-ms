@@ -1,26 +1,26 @@
 <template>
-  <div class="user">
+  <div class="role">
     <transition name="fade">
       <section class="search-bar" v-show="state.queryFormVisible">
         <el-form label-width="80px" ref="queryform">
           <div class="inputs">
             <el-form-item class="input" size="small" prop="nickname" label="昵称">
               <el-input
-                placeholder="请输入用户昵称"
+                placeholder="请输入角色名称"
                 v-model="state.queryFormValue.nickname"
               ></el-input>
             </el-form-item>
             <el-form-item class="input" size="small" prop="gender" label="性别">
               <el-select
                 v-model="state.queryFormValue.gender"
-                placeholder="选择用户性别"
+                placeholder="选择角色状态"
                 clearable
                 filterable
               >
                 <el-option
                   v-for="item in [
-                    { label: '男', value: 'male' },
-                    { label: '女', value: 'female' },
+                    { label: '启用', value: 'able' },
+                    { label: '停用', value: 'disable' },
                   ]"
                   :key="item.value"
                   :label="item.label"
@@ -73,7 +73,7 @@
           </el-tooltip>
           <el-tooltip content="刷新数据" placement="top">
             <el-button
-              @click="getUserData"
+              @click="getRoleData"
               circle
               size="mini"
               icon="el-icon-refresh"
@@ -83,6 +83,7 @@
       </div>
       <el-table
         stripe
+        fit
         highlight-current-row
         style="width: 100%"
         :indent="60"
@@ -97,20 +98,11 @@
           :key="item.prop"
           v-bind="item"
         >
-          <template #default="scope" v-if="item.prop == 'avatar'">
-            <el-avatar
-              icon="el-icon-user-solid"
-              shape="circle"
-              :src="scope.row.avatar"
-              fit="fill"
-            ></el-avatar>
+          <template #default="scope" v-if="item.prop == 'rolename'">
+            <el-tag>{{ scope.row.rolename }}</el-tag>
           </template>
-          <template #default="scope" v-else-if="item.prop == 'gender'">
-            <el-tag v-if="scope.row.gender == 'male'">男</el-tag>
-            <el-tag v-else type="danger">女</el-tag>
-          </template>
-          <template #default="scope" v-else-if="item.prop == 'address'">
-            {{ scope.row.address }}
+          <template #default="scope" v-if="item.prop == 'status'">
+            <el-switch v-model="scope.row.status" @change="changeRoleStatus"></el-switch>
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
@@ -121,7 +113,7 @@
 
               <el-popconfirm
                 title="你确定要删除此用户么？"
-                @confirm="() => deleteUser(scope.row._id)"
+                @confirm="() => scope.row._id"
               >
                 <template #reference>
                   <el-button
@@ -136,85 +128,64 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
+      <!-- <el-pagination
+        @size-change="sizeChange"
         class="pagination"
         :current-page="1"
         :page-sizes="[5, 10, 15, 20]"
         :page-size="20"
         layout="total, sizes, prev, pager, next, jumper"
         :total="1"
-      ></el-pagination>
+      ></el-pagination> -->
     </section>
   </div>
 </template>
 
 <script lang="ts" setup>
-import dayjs from "dayjs";
-import { ElMessage } from "element-plus";
-import { reactive, onMounted } from "vue";
-import { delUser, getUserList } from "../../api/user";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { reactive } from "vue";
 
-onMounted(() => {
-  getUserData();
-});
-
-// 查询
-const search = () => {
-  const { gender, nickname } = state.queryFormValue;
-  getUserData({ gender, nickname });
-};
-
-const hideSerachBar = () => {
-  state.queryFormVisible = !state.queryFormVisible;
-};
-
-const deleteUser = async (id: string) => {
-  const ret = await delUser(id);
-  if (ret.code == 1) {
-    ElMessage.success(ret.message);
-  }
-  getUserData();
-};
-
-const getUserData = async (query?: object) => {
-  const users: Array<any> = await getUserList({ ...query });
-  users.map((el: any) => {
-    el.createdAt = dayjs(el.createdAt).format("YYYY-MM-DD");
-    let { province, city, district } = el.address.ad_info;
-    let address = ` ${province} ${city} ${district}`;
-    el.address = address;
-  });
-  state.tableData = users;
-};
-
-// 查询表单
-const state = reactive<any>({
-  tableData: [],
+const state = reactive({
+  tableData: [
+    {
+      user: "IU",
+      password: "IUU",
+      rolename: "超级管理员",
+      authority: "admin",
+      status: true,
+      createdAt: "2021-09-01",
+    },
+  ],
   tableFields: [
     {
-      label: "头像",
-      prop: "avatar",
+      label: "用户",
+      prop: "user",
       width: "100px",
     },
     {
-      label: "昵称",
-      prop: "nickname",
+      label: "密码",
+      prop: "password",
       width: "100px",
     },
     {
-      label: "性别",
-      prop: "gender",
-      width: "50px",
+      label: "角色名称",
+      prop: "rolename",
+      width: "150px",
     },
     {
-      label: "地址",
-      prop: "address",
-      width: "200px",
+      label: "权限字符",
+      prop: "authority",
+      width: "100px",
     },
     {
-      label: "注册时间",
+      label: "状态",
+      prop: "status",
+      width: "100px",
+    },
+    {
+      label: "评论时间",
       prop: "createdAt",
-      width: "160px",
+      width: "200px",
     },
   ],
   queryFormVisible: true,
@@ -223,10 +194,38 @@ const state = reactive<any>({
     gender: "",
   },
 });
+
+const search = () => {};
+
+const changeRoleStatus = () => {
+  ElMessageBox.confirm('你确定要"停用"此角色么?', "警告", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      ElMessage({
+        type: "success",
+        message: "停用成功!",
+      });
+    })
+    .catch(() => {
+      ElMessage({
+        type: "error",
+        message: "停用失败!",
+      });
+    });
+};
+
+const hideSerachBar = () => {
+  state.queryFormVisible = !state.queryFormVisible;
+};
+
+const getRoleData = () => {};
 </script>
 
 <style lang="scss" scoped>
-.user {
+.role {
   .search-bar {
     background-color: #fff;
     box-sizing: border-box;
@@ -278,17 +277,5 @@ const state = reactive<any>({
       text-align: right;
     }
   }
-}
-
-// 滚动条的宽度
-:deep(.el-table__body-wrapper::-webkit-scrollbar) {
-  width: 5px; // 横向滚动条
-  height: 10px; // 纵向滚动条 必写
-}
-
-// 滚动条的滑块
-:deep(.el-table__body-wrapper::-webkit-scrollbar-thumb) {
-  background-color: #ddd;
-  border-radius: 30px;
 }
 </style>

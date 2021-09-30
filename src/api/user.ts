@@ -27,4 +27,19 @@ export const delUser = async (id: string) => {
   return {}
 }
 
+export const getRandomAvatar = (params: object) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { data } = await axios({
+        method: 'GET',
+        url: '/avatar',
+        params,
+      })
+      data.code ? resolve(data) : resolve(null)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
 export const logout = async (obj: any) => {}

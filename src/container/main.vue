@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="card-wrapper">
-      <el-card class="box-card-mid timeline">
+      <el-card class="timeline">
         <template #header>
           <div class="card-header">
             <span>时间线</span>
@@ -42,7 +42,7 @@
       </el-card>
     </div>
     <div class="card-wrapper">
-      <el-card class="box-card-big newest-art">
+      <el-card class="newest-art">
         <template #header>
           <div class="card-header">
             <span>最新文章</span>
@@ -70,7 +70,7 @@
         </div>
       </el-card>
 
-      <el-card class="box-card-big newest-comment" style="margin-top: 20px">
+      <el-card class="newest-comment" style="margin-top: 20px">
         <template #header>
           <div class="card-header">
             <span>最新留言</span>
@@ -120,7 +120,7 @@
 </template>
 
 <script lang="ts" setup>
-import dayjs from "dayjs";
+import { format } from "../utils/day";
 import { onMounted, reactive } from "vue";
 import { getComment } from "../api/comment";
 import { getUpdates } from "../api/update";
@@ -138,10 +138,6 @@ const state = reactive<State>({
   comments: [],
   updates: [],
 });
-
-const format = (date: string, format: string) => {
-  return dayjs(date).format(format);
-};
 
 onMounted(() => {
   load();
@@ -171,8 +167,11 @@ const load = async () => {
   min-height: 100%;
   .card-wrapper {
     &:not(:first-of-type) {
+      flex-basis: 30%;
+      max-width: 500px;
       margin-left: 5%;
     }
+    flex-grow: 1;
     .timeline {
       min-width: 300px;
       margin-bottom: 20px;

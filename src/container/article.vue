@@ -315,26 +315,42 @@ import { ref, Ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
 // import ArtEditor from "../../components/art_editor.vue";
-
+import { format } from "../utils/day";
 // Data
 import {
   taballFields, // 表格字段
   rules, // 表格字段
-  state,
   queryFormField,
-} from ".";
+} from "./index";
 // Http
-import { getArtList, getArtDetail, insertArt, updateArt } from "../../api/art";
-import { getTags } from "../../api/tag";
-import { getStatus } from "../../api/status";
+import { getArtList, getArtDetail, insertArt, updateArt } from "../api/art";
+import { getTags } from "../api/tag";
+import { getStatus } from "../api/status";
 
 // Component
-import TinyEditor from "../../components/tiny.vue";
-import { uploadImg } from "../../api/upload";
+import TinyEditor from "../components/tiny.vue";
+import { uploadImg } from "../api/upload";
 
 onMounted(() => {
   refech();
 });
+
+const dialog = reactive<any>({
+  insert: false,
+  edit: false,
+  view: false,
+});
+
+const showEditForm = (params: any) => {
+  dialog.edit = true;
+};
+
+const state = reactive<any>({
+  category: [], // 分类
+  status: [], // 状态
+  insertFormData: {}, //添加表单数据
+});
+
 // 刷新表格数据
 const refech = async () => {
   const { arts } = await getArtList({});
@@ -343,15 +359,15 @@ const refech = async () => {
   tableData.value = [];
   state.category = [];
   arts.forEach((art: Article) => {
-    art.createdAt = dayjs(art.createdAt).format("YYYY-MM-DD");
-    art.updatedAt = dayjs(art.updatedAt).format("YYYY-MM-DD");
+    art.createdAt = format(art.createdAt as any, "YYYY-MM-DD");
+    art.updatedAt = format(art.updatedAt as any, "YYYY-MM-DD");
   });
   state.category = tags;
   state.status = status;
   tableData.value.push(...arts);
 };
 
-//  Elemeny Dom
+//  Element Dom
 const queryform = ref(null);
 const insertFormRef = ref(null);
 const upload = ref(null);
@@ -383,9 +399,9 @@ const showQueryForm = () => {
 };
 
 // 显示查询文章
-const showViewForm = () => {
+const showViewForm = (id: string) => {
   viewFormVisable.value = !viewFormVisable.value;
-  getArtDetail();
+  getArtDetail(id);
 };
 
 const handleSizeChange = () => {};
@@ -527,9 +543,6 @@ let tableData: Ref<Array<any>> = ref([]);
     margin-top: 20px;
     text-align: right;
   }
-}
-
-:deep(.is-scrolling-left) {
 }
 
 :deep(.el-overlay) {

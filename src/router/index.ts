@@ -54,7 +54,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '/role',
-        component: () => import('../container/system/role.vue'),
+        component: () => import('../container/role.vue'),
         meta: {
           title: '',
         },
@@ -70,27 +70,57 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
-        component: () => import('../container/article/home.vue'),
+        component: () => import('../container/home.vue'),
       },
       {
         path: 'article',
-        component: () => import('../container/article/article.vue'),
+        component: () => import('../container/article.vue'),
         meta: {
           title: '文章管理',
         },
       },
       {
         path: 'comment',
-        component: () => import('../container/comment/comment.vue'),
+        component: () => import('../container/comment.vue'),
         meta: {
           title: '留言管理',
         },
       },
       {
         path: 'user',
-        component: () => import('../container/user/user.vue'),
+        component: () => import('../container/user.vue'),
         meta: {
           title: '用户管理',
+        },
+      },
+      {
+        path: 'category',
+        component: () => import('../container/category.vue'),
+        meta: {
+          title: '分类管理',
+        },
+      },
+      {
+        path: 'tag',
+        component: () => import('../container/tag.vue'),
+        meta: {
+          title: '标签管理',
+        },
+      },
+    ],
+  },
+  {
+    path: '/laboratory',
+    component: () => import('../layout/layout.vue'),
+    meta: {
+      title: '角色管理',
+    },
+    children: [
+      {
+        path: '/laboratory',
+        component: () => import('../container/laboratory.vue'),
+        meta: {
+          title: '实验室',
         },
       },
     ],

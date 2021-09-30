@@ -49,8 +49,8 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, inject, onMounted, ref, watch, watchEffect } from 'vue'
-import TreeMenu from './treeMenu.vue'
+import { defineProps, inject, onMounted, ref, watch, watchEffect } from "vue";
+import TreeMenu from "./treeMenu.vue";
 
 // let screenWidth = ref(0);
 // let timer = ref(false);
@@ -77,7 +77,7 @@ import TreeMenu from './treeMenu.vue'
 
 defineProps({
   isCollapse: Boolean,
-})
+});
 </script>
 
 <style lang="scss">
@@ -114,7 +114,7 @@ defineProps({
       &:hover {
         cursor: pointer;
         transition: 500ms linear;
-        background: url('@/assets/image/snow.gif');
+        background: url("@/assets/image/snow.gif");
         background-size: cover;
       }
       .avatar {

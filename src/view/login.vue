@@ -1,12 +1,6 @@
 <template>
   <div class="login">
-    <el-form
-      :model="formData"
-      :rules="rules"
-      status-icon
-      ref="loginForm"
-      class="form"
-    >
+    <el-form :model="formData" :rules="rules" status-icon ref="loginForm" class="form">
       <h1 class="title">Redloney`s 后台管理系统</h1>
       <el-form-item prop="nickname">
         <el-input
@@ -56,51 +50,51 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, Ref } from 'vue'
-import { ElForm, ElFormItem, ElButton, ElInput, ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
-import { login } from '../api/user'
+import { computed, reactive, ref, Ref } from "vue";
+import { ElForm, ElFormItem, ElButton, ElInput, ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+import { login } from "../api/user";
 
-const router = useRouter()
+const router = useRouter();
 
 // 接口
 interface formTypes {
-  nickname: string
-  email: string
-  remember: boolean
+  nickname: string;
+  email: string;
+  remember: boolean;
 }
 
 // 表单Dom
-const loginForm: Ref<any | null> = ref(null)
+const loginForm: Ref<any | null> = ref(null);
 
 // 表单数据
 const formData = reactive<formTypes>({
-  nickname: 'admin',
-  email: 'admin@admin.com',
+  nickname: "admin",
+  email: "admin@admin.com",
   remember: true,
-})
+});
 
 const rules = {
-  nickname: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  email: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-}
+  nickname: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  email: [{ required: true, message: "请输入密码", trigger: "blur" }],
+};
 
 // 提交
 const submitForm = () => {
   loginForm.value?.validate(async (valid: boolean) => {
     if (valid) {
-      const isLogin = await login(formData)
+      const isLogin = await login(formData);
       if (isLogin) {
-        ElMessage.success('登录成功!')
-        router.push('/main')
-        return
+        ElMessage.success("登录成功!");
+        router.push("/main");
+        return;
       }
-      ElMessage.warning('登录失败!')
+      ElMessage.warning("登录失败!");
     } else {
-      return false
+      return false;
     }
-  })
-}
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -110,7 +104,7 @@ const submitForm = () => {
   overflow: hidden;
   @include flex-center;
   flex-direction: column;
-  background: url('../assets/image/wallhaven-1krg3g.jpg') 100% 100%;
+  background: url("../assets/image/wallhaven-1krg3g.jpg") 100% 100%;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -125,6 +119,7 @@ const submitForm = () => {
     padding: 15px 30px;
     box-sizing: border-box;
     border-radius: 5px;
+    transform: translateY(-50%);
     .title {
       text-align: center;
       font-weight: bold;
@@ -137,9 +132,9 @@ const submitForm = () => {
   }
   .copyright {
     position: absolute;
-    bottom: 0.5rem;
+    bottom: 5vh;
     font-size: 14px;
-    font-family: 'SentyTEA';
+    font-family: "SentyTEA";
     color: #fff;
     letter-spacing: 1.5px;
     justify-self: flex-end;

@@ -6,17 +6,20 @@
           v-for="(item, index) in route.matched"
           :to="{ path: item.path }"
           :key="index + item.path"
-          >{{ item.meta.title }}</el-breadcrumb-item
         >
+          <!-- <el-tag v-show="item.meta.title" closable> -->
+          {{ item.meta.title }}
+          <!-- </el-tag> -->
+        </el-breadcrumb-item>
       </el-breadcrumb>
     </el-card>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from 'vue-router'
+import { useRoute } from "vue-router";
 
-const route = useRoute()
+const route = useRoute();
 </script>
 
 <style lang="scss" scoped>
@@ -25,10 +28,13 @@ const route = useRoute()
   background-color: #fff;
   box-sizing: border-box;
   margin-bottom: 20px;
-  .el-breadcrumb {
+  :deep(.el-breadcrumb) {
     user-select: none;
-    .el-breadcrumb-item {
-      font-weight: normal;
+    .el-breadcrumb__item {
+      font-size: 13px;
+      .is-link {
+        color: #333;
+      }
     }
   }
 

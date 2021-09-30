@@ -23,46 +23,46 @@
 </template>
 
 <script lang="ts" setup>
-import CountTo from '../../components/vue-count-to/vue-countTo.vue'
-import Echarts from '../../components/echarts.vue'
-import { reactive } from 'vue'
+import CountTo from "../components/vue-count-to/vue-countTo.vue";
+import Echarts from "../components/echarts.vue";
+import { reactive } from "vue";
 
 const state = reactive({
   cards: [
     {
-      icon: '',
-      text: '访客',
+      icon: "",
+      text: "访客",
       startVal: 0,
       endVal: 122,
       duration: 2000,
-      color: '#fed330',
+      color: "#fed330",
     },
     {
-      icon: '',
-      text: '消息',
+      icon: "",
+      text: "消息",
       startVal: 0,
       endVal: 200,
       duration: 2000,
-      color: '#fc5c65',
+      color: "#fc5c65",
     },
     {
-      icon: '',
-      text: '金额',
+      icon: "",
+      text: "金额",
       startVal: 0,
       endVal: 1350,
       duration: 2000,
-      color: '#45aaf2',
+      color: "#45aaf2",
     },
     {
-      icon: '',
-      text: '订单',
+      icon: "",
+      text: "订单",
       startVal: 0,
       endVal: 56,
       duration: 3000,
-      color: '#2bcbba',
+      color: "#2bcbba",
     },
   ],
-})
+});
 </script>
 <style lang="scss" scoped>
 .data {
